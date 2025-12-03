@@ -6,6 +6,9 @@ import pandas as pd
 
 app = FastAPI()
 
+@app.get("/")
+def bienvenida():
+    return {"Hola bien benido a fastapi nuevo proyecto creado!"}
 
 @app.get("/my-first-api")
 def hello(name = None):
