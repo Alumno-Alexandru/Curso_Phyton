@@ -4,47 +4,47 @@ from fastapi import FastAPI
 from starlette.responses import StreamingResponse
 import pandas as pd
 
-app = FastAPI()
+# app = FastAPI()
 
-@app.get("/")
-def bienvenida():
-    return {"Hola bien benido a fastapi nuevo proyecto creado!"}
+# @app.get("/")
+# def bienvenida():
+#     return {"Hola bien benido a fastapi nuevo proyecto creado!"}
 
-@app.get("/my-first-api")
-def hello(name = None):
+# @app.get("/my-first-api")
+# def hello(name = None):
 
-    if name is None:
-        # como hacer saltos de linea en python;
-        text = 'No esta registrado ingrese su nombre por favor.\n' + 'Ponga su nombre en la URL asi: /my-first-api?name=SuNombre' 
+#     if name is None:
+#         # como hacer saltos de linea en python;
+#         text = 'No esta registrado ingrese su nombre por favor.\n' + 'Ponga su nombre en la URL asi: /my-first-api?name=SuNombre' 
 
-    else:
-        text = 'Bienbenido ' + name + '! ' + 'Esperamos que le guste este entorno :)'
-    return text
+#     else:
+#         text = 'Bienbenido ' + name + '! ' + 'Esperamos que le guste este entorno :)'
+#     return text
 
-@app.get("/get-iris")
-def get_iris():
+# @app.get("/get-iris")
+# def get_iris():
 
-    import pandas as pd
-    url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
-    iris = pd.read_csv(url)
+#     import pandas as pd
+#     url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
+#     iris = pd.read_csv(url)
 
-    return iris
+#     return iris
 
 
-@app.get("/plot-iris")
-def plot_iris():
+# @app.get("/plot-iris")
+# def plot_iris():
 
-    import pandas as pd
-    import matplotlib.pyplot as plt
+#     import pandas as pd
+#     import matplotlib.pyplot as plt
 
-    url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
-    iris = pd.read_csv(url)
+#     url ='https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv'
+#     iris = pd.read_csv(url)
 
-    plt.scatter(iris['sepal_length'], iris['sepal_width'])
-    plt.savefig('iris.png')
-    file = open('iris.png', mode="rb")
+#     plt.scatter(iris['sepal_length'], iris['sepal_width'])
+#     plt.savefig('iris.png')
+#     file = open('iris.png', mode="rb")
 
-    return StreamingResponse(file, media_type="image/png")
+#     return StreamingResponse(file, media_type="image/png")
 
 #----------------------------------------------------------------------------------------------------------------------------------#
 
