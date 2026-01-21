@@ -1,0 +1,33 @@
+
+### Obtener todos los items
+GET http://127.0.0.1:8000/stock
+
+
+### Agregar o actualizar un item (item_id = 1)
+PUT http://127.0.0.1:8000/stock/1
+Content-Type: application/json
+
+{
+  "name": "Camisa",
+  "description": "Camisa azul talla M",
+  "price": 25.99,
+  "tax": 3.5
+}
+
+### Agregar o actualizar un item (item_id = 2)
+PUT http://127.0.0.1:8000/stock/2
+Content-Type: application/json
+
+{
+  "name": "Pantalón",
+  "description": "Pantalón negro",
+  "price": 39.99,
+  "tax": 4.2
+}
+
+
+### Obtener todos los items nuevamente
+GET http://127.0.0.1:8000/stock
+
+### Borrar un item por ID (item_id = 1)
+DELETE http://127.0.0.1:8000/stock/1
