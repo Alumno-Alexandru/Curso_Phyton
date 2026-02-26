@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Subir Archivos{% endblock %}
+
+{% block content %}
+<section class="py-16">
+    <div class="max-w-2xl mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Subir Nuevos Archivos</h2>
+            <p class="text-center text-gray-600 mb-8">
+                Selecciona uno o más archivos para almacenarlos en la base de datos.
+            </p>
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('upload_files') }}">
+                <div class="mb-6">
+                    <label for="files" class="block mb-2 text-sm font-medium text-gray-900">Seleccionar archivos</label>
+                    <input type="file" name="files[]" id="files" multiple class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition font-semibold">Subir Archivos</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

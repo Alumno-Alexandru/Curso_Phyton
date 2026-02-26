@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo:latest
+    container_name: mongoDB
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongoData:/data/db
+    networks:
+      - app-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongoGUI
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${INITDB_ROOT_USERNAME}:${INITDB_ROOT_PASSWORD}@mongo:27017/
+      ME_CONFIG_BASICAUTH_ENABLED: ${ENABLE_AUTH}
+      ME_CONFIG_BASICAUTH_USERNAME: ${CONFIG_AUTH_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${CONFIG_AUTH_PASSWORD}
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  web:
+    build: .
+    container_name: flaskApp
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      mongo:
+        condition: service_started
+    environment:
+      - FLASK_ENV=development
+      - MONGO_URI_IN=${MONGO_URI_IN}
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+
+volumes:
+  mongoData:
+
+networks:
+  app-network:
+    driver: bridge

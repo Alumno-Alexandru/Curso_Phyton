@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos en Venta{% endblock %}
+
+{% block content %}
+<section class="hero-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-5xl font-bold mb-4">Descubre Proyectos Increíbles</h1>
+        <p class="text-xl mb-8">Explora y gestiona proyectos de desarrollo en nuestro marketplace</p>
+    </div>
+</section>
+
+<section class="py-16">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Proyectos Disponibles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in projects %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover transition duration-300">
+                <div class="p-7 flex flex-col gap-3">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full">{{ project.categoria }}</span>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-1">{{ project.titulo }}</h3>
+                    <p class="text-gray-600 mb-3 line-clamp-3">{{ project.descripcion }}</p>
+                    <span class="text-3xl font-extrabold text-indigo-600 mb-4">{{ project.precio }}€</span>
+                    <div class="flex flex-wrap gap-3 mt-2">
+                        <a href="/edit/{{ project._id }}" class="flex-1 min-w-[100px] bg-yellow-400 text-white text-center py-2 rounded-lg font-semibold shadow hover:bg-yellow-500 transition">Editar</a>
+                        <a href="/delete/{{ project._id }}" class="flex-1 min-w-[100px] bg-red-500 text-white text-center py-2 rounded-lg font-semibold shadow hover:bg-red-600 transition">Eliminar</a>
+                        {% if project.file_id %}
+                        <a href="/ver_archivo/{{ project.file_name }}" title="Ver archivo" class="flex-1 min-w-[100px] bg-blue-500 text-white text-center py-2 rounded-lg font-semibold shadow hover:bg-blue-600 transition">Visualizar</a>
+                        {% endif %}
+                        <form method="POST" action="/comprar/{{ project._id }}" style="display:inline;">
+                            <button type="submit" class="flex-1 min-w-[100px] bg-green-600 text-white text-center py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition">Comprar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if not projects %}
+        <div class="text-center py-12">
+            <p class="text-gray-500 text-lg">No hay proyectos disponibles aún.</p>
+            <a href="/add" class="text-indigo-600 hover:text-indigo-800">¡Sé el primero en agregar uno!</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
