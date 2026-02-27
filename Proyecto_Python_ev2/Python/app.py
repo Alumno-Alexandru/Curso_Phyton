@@ -160,13 +160,44 @@ def edit(id):
             flash('El precio debe ser un número válido.', 'error')
             return render_template('edit.html', project=project), 400
 
-        # Actualizar el proyecto en la base de datos
-        projects_collection.update_one({'_id': object_id}, {'$set': {
+        update_data = {
             'titulo': titulo,
             'descripcion': descripcion,
             'precio': precio,
             'categoria': categoria
-        }})
+        }
+
+        # Manejar la actualización del archivo (opcional)
+        file = request.files.get('file')
+        if file and file.filename:
+            filename = secure_filename(file.filename)
+            if not filename.endswith('.html'):
+                flash('Solo se permite subir archivos HTML.', 'error')
+                return render_template('edit.html', project=project), 400
+
+            try:
+                content = file.read()
+                content_str = content.decode('utf-8')
+                if '<link' in content_str or ('<img src="' in content_str and not 'http' in content_str):
+                    flash('El archivo HTML no debe contener referencias locales a CSS o imágenes. Use URLs externas.', 'error')
+                    return render_template('edit.html', project=project), 400
+
+                # Eliminar el archivo anterior si existe
+                if 'file_id' in project:
+                    try:
+                        fs.delete(project['file_id'])
+                    except Exception:
+                        pass
+
+                file_id = fs.put(content, filename=filename, content_type='text/html')
+                update_data['file_id'] = file_id
+                update_data['file_name'] = filename
+            except Exception as e:
+                flash(f"Error al subir el archivo: {e}", 'error')
+                return render_template('edit.html', project=project), 400
+
+        # Actualizar el proyecto en la base de datos
+        projects_collection.update_one({'_id': object_id}, {'$set': update_data})
         flash('Proyecto actualizado', 'success')
         return redirect(url_for('index'))
 
@@ -182,7 +213,7 @@ def delete(id):
         if result.deleted_count == 0:
             flash('Proyecto no encontrado.', 'warning')
         else:
-            flash('Proyecto eliminado.', 'success')
+            flash('Proyecto eliminado.', 'danger')
     except InvalidId:
         flash('ID de proyecto no válido.', 'error')
     return redirect(url_for('index'))
