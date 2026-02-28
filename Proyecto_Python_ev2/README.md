@@ -1,5 +1,6 @@
 # 🚀 MercadoPro - Plataforma de Venta de Proyectos
 
+
 Una hermosa y detallada plataforma web para vender y comprar proyectos personales, construida con Python, Flask, MongoDB y Tailwind CSS.
 
 ## 📋 Características
